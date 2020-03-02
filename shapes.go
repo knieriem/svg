@@ -90,6 +90,9 @@ func (line *PolyLine) PreAlloc(n int) *PolyLine {
 	return line
 }
 
+// Polygon adds an empty polygon element to the ElemList.
+// Points may be added using the AddInt method of the returned
+// object.
 func (el *ElemList) Polygon() *PolyLine {
 	p := &polygon{}
 	el.append(p)
