@@ -5,11 +5,18 @@ import (
 	"strconv"
 )
 
+// ShapeObject embeds Object and provides a PathLength attribute
+// field that is common to all basic shapes
+type ShapeObject struct {
+	Object
+	PathLength float64 `xml:"pathLength,attr,omitempty"`
+}
+
 // LineInt draws a line specified by integer coordinates.
-func (el *ElemList) LineInt(x1, y1, x2, y2 int) *Object {
+func (el *ElemList) LineInt(x1, y1, x2, y2 int) *ShapeObject {
 	l := &line{X1: float64(x1), Y1: float64(y1), X2: float64(x2), Y2: float64(y2)}
 	el.append(l)
-	return &l.Object
+	return &l.ShapeObject
 }
 
 type line struct {
@@ -18,14 +25,14 @@ type line struct {
 	Y1      float64  `xml:"y1,attr"`
 	X2      float64  `xml:"x2,attr"`
 	Y2      float64  `xml:"y2,attr"`
-	Object
+	ShapeObject
 }
 
 // RectInt draws a rectangle based on integer coordinates.
-func (el *ElemList) RectInt(x, y, w, h int) *Object {
+func (el *ElemList) RectInt(x, y, w, h int) *ShapeObject {
 	r := &rect{X: float64(x), Y: float64(y), Width: float64(w), Height: float64(h)}
 	el.append(r)
-	return &r.Object
+	return &r.ShapeObject
 }
 
 type rect struct {
@@ -34,14 +41,14 @@ type rect struct {
 	Y       float64  `xml:"y,attr"`
 	Width   float64  `xml:"width,attr"`
 	Height  float64  `xml:"height,attr"`
-	Object
+	ShapeObject
 }
 
 // CircleInt draws a circle based on integer coordinates.
-func (el *ElemList) CircleInt(cx, cy, r int) *Object {
+func (el *ElemList) CircleInt(cx, cy, r int) *ShapeObject {
 	c := &circle{X: float64(cx), Y: float64(cy), R: float64(r)}
 	el.append(c)
-	return &c.Object
+	return &c.ShapeObject
 }
 
 type circle struct {
@@ -49,14 +56,14 @@ type circle struct {
 	X       float64  `xml:"cx,attr"`
 	Y       float64  `xml:"cy,attr"`
 	R       float64  `xml:"r,attr"`
-	Object
+	ShapeObject
 }
 
 // EllipseInt draws an ellipse based on integer coordinates.
-func (el *ElemList) EllipseInt(cx, cy, rx, ry int) *Object {
+func (el *ElemList) EllipseInt(cx, cy, rx, ry int) *ShapeObject {
 	e := &ellipse{X: float64(cx), Y: float64(cy), Rx: float64(rx), Ry: float64(ry)}
 	el.append(e)
-	return &e.Object
+	return &e.ShapeObject
 }
 
 type ellipse struct {
@@ -65,7 +72,7 @@ type ellipse struct {
 	Y       float64  `xml:"cy,attr"`
 	Rx      float64  `xml:"rx,attr"`
 	Ry      float64  `xml:"ry,attr"`
-	Object
+	ShapeObject
 }
 
 // Polyline adds an empty polyline element to the ElemList.
@@ -80,7 +87,7 @@ func (el *ElemList) PolyLine() *PolyLine {
 type PolyLine struct {
 	XMLName xml.Name `xml:"polyline"`
 	Points  `xml:"points,attr"`
-	Object
+	ShapeObject
 }
 
 func (line *PolyLine) PreAlloc(n int) *PolyLine {
