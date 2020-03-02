@@ -131,3 +131,16 @@ func (pts Points) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 func (pts *Points) AddInt(x, y int) {
 	*pts = append(*pts, [2]float64{float64(x), float64(y)})
 }
+
+// Path adds a <path> element.
+func (el *ElemList) Path(d string) *ShapeObject {
+	p := &path{D: d}
+	el.append(p)
+	return &p.ShapeObject
+}
+
+type path struct {
+	XMLName xml.Name `xml:"path"`
+	D       string   `xml:"d,attr,omitempty"`
+	ShapeObject
+}
