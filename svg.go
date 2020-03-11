@@ -23,14 +23,13 @@ type Conf struct {
 	// once in the generated Stylesheet.
 	StylesheetUnifyStyles bool
 
-	// ScopeStyleDefinitions makes sure that classes
-	// defined within the embedded stylesheet are
-	// valid within the SVG document only, by inserting an ID selector
-	// in front of each definition.
-	// The purpose is to avoid side-effects when using multiple
-	// generated SVG documents in one HTML document.
+	// Scoped makes sure that classes defined within the embedded
+	// stylesheet are valid within the SVG document only,
+	// by inserting an ID selector in front of each definition.
 	// If set, Document.ID must be set to a value too.
-	ScopeStyleDefinitions bool
+	// The purpose of this option is to avoid side-effects when
+	// using multiple inlined SVG documents in one HTML document.
+	Scoped bool
 
 	// Embedded, if set, makes sure that the SVG 'xmlns' attribute
 	// is left out of the generated SVG.
@@ -110,7 +109,7 @@ func (d *Document) MakeStyle(name, style string) Styling {
 		if d.Style != "" {
 			d.Style += " "
 		}
-		if d.conf.ScopeStyleDefinitions && d.ID != "" {
+		if d.conf.Scoped && d.ID != "" {
 			d.Style += "#" + d.ID + " "
 		}
 		d.Style += "." + name + " {" + strings.TrimSuffix(style, ";") + "}"
