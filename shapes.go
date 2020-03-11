@@ -29,19 +29,21 @@ type line struct {
 }
 
 // RectInt draws a rectangle based on integer coordinates.
-func (el *ElemList) RectInt(x, y, w, h int) *ShapeObject {
-	r := &rect{X: float64(x), Y: float64(y), Width: float64(w), Height: float64(h)}
+func (el *ElemList) RectInt(x, y, w, h int) *Rect {
+	r := &Rect{X: float64(x), Y: float64(y), Width: float64(w), Height: float64(h)}
 	el.append(r)
-	return &r.ShapeObject
+	return r
 }
 
-type rect struct {
-	XMLName xml.Name `xml:"rect"`
-	X       float64  `xml:"x,attr"`
-	Y       float64  `xml:"y,attr"`
-	Width   float64  `xml:"width,attr"`
-	Height  float64  `xml:"height,attr"`
-	ShapeObject
+type Rect struct {
+	XMLName     xml.Name `xml:"rect"`
+	X           float64  `xml:"x,attr,omitempty"`
+	Y           float64  `xml:"y,attr,omitempty"`
+	Width       float64  `xml:"width,attr"`
+	Height      float64  `xml:"height,attr"`
+	Rx          float64  `xml:"rx,attr,omitempty"`
+	Ry          float64  `xml:"ry,attr,omitempty"`
+	ShapeObject `xml:"x,attr,omitempty"`
 }
 
 // CircleInt draws a circle based on integer coordinates.
