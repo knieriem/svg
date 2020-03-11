@@ -27,6 +27,8 @@ type Conf struct {
 	// stylesheet are valid within the SVG document only,
 	// by inserting an ID selector in front of each definition.
 	// If set, Document.ID must be set to a value too.
+	// Also, IDs created with MakeID will be prefixed by the
+	// Document.ID and a hyphen.
 	// The purpose of this option is to avoid side-effects when
 	// using multiple inlined SVG documents in one HTML document.
 	Scoped bool
@@ -70,6 +72,16 @@ func NewDocument(c *Conf) *Document {
 	}
 	d.conf = c
 	return d
+}
+
+// MakeID returns an id value that is, depending on
+// the value of Scoped, prefixed with the documents
+// ID to avoid conflicts with other inlined SVGs.
+func (d *Document) MakeID(id string) string {
+	if d.conf.Scoped && d.ID != "" {
+		return d.ID + "-" + id
+	}
+	return id
 }
 
 // MakeStyle returns a Styling that may be applied to stylable
