@@ -52,6 +52,16 @@ func (tl *TransformList) RotateOrig(degrees float64) *TransformList {
 	return tl.append(ftrans("rotate", degrees))
 }
 
+// Scale performs a scale transformation by x.
+func (tl *TransformList) Scale(x float64) *TransformList {
+	return tl.append(ftrans("scale", x))
+}
+
+// ScaleXY performs a scale transformation by x and y.
+func (tl *TransformList) ScaleXY(x, y float64) *TransformList {
+	return tl.append(Transform{Name: "scale", Args: []TransformArg{floatArg(x), floatArg(y)}})
+}
+
 // SkewX performs a skew transformation along the x axis by the specified angle.
 func (tl *TransformList) SkewX(degrees float64) *TransformList {
 	return tl.append(ftrans("skewX", degrees))
