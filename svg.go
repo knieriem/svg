@@ -218,7 +218,8 @@ type Object struct {
 	ID            string `xml:"id,attr,omitempty"`
 	TransformList `xml:"transform,attr,omitempty"`
 	Styling
-	Title string `xml:"title,omitempty"`
+	ExtraAttr []xml.MarshalerAttr `xml:",attr,omitempty"`
+	Title     string              `xml:"title,omitempty"`
 }
 
 func (o *Object) SetID(id string) *Object {
@@ -230,6 +231,24 @@ func (o *Object) SetID(id string) *Object {
 func (o *Object) SetTitle(content string) *Object {
 	o.Title = content
 	return o
+}
+
+// Attr adds an arbitrary attribute to the object.
+func (o *Object) Attr(name, value string) {
+	a := &extraAttr{name: name, value: value}
+	o.ExtraAttr = append(o.ExtraAttr, a)
+}
+
+type extraAttr struct {
+	name  string
+	value string
+}
+
+func (xa *extraAttr) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
+	var a xml.Attr
+	a.Name.Local = xa.name
+	a.Value = xa.value
+	return a, nil
 }
 
 // Ints is a slice of integers that marshals, if used as an XML
