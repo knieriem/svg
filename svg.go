@@ -210,6 +210,32 @@ func (el *ElemList) Group() *Container {
 	return &g.Container
 }
 
+// Symbol is used as a container to group other SVG elements
+// that won't be displayed initially.
+type Symbol struct {
+	XMLName xml.Name `xml:"symbol"`
+
+	X float64 `xml:"x,attr,omitempty"`
+	Y float64 `xml:"y,attr,omitempty"`
+
+	Width   Length `xml:"width,attr,omitempty"`
+	Height  Length `xml:"height,attr,omitempty"`
+	ViewBox Ints   `xml:"viewBox,attr,omitempty"`
+
+	RefX float64 `xml:"refX,attr,omitempty"`
+	RefY float64 `xml:"refY,attr,omitempty"`
+
+	Container
+}
+
+// Symbol appends a <symbol> element.
+func (el *ElemList) Symbol(id string) *Symbol {
+	s := new(Symbol)
+	s.ID = id
+	el.append(s)
+	return s
+}
+
 // PreAlloc preallocates memory for the given number of elements.
 func (c *Container) PreAlloc(n int) *Container {
 	if c.ElemList == nil {
