@@ -218,6 +218,7 @@ type Object struct {
 	ID            string `xml:"id,attr,omitempty"`
 	TransformList `xml:"transform,attr,omitempty"`
 	Styling
+	Title string `xml:"title,omitempty"`
 }
 
 func (o *Object) SetID(id string) *Object {
@@ -225,15 +226,10 @@ func (o *Object) SetID(id string) *Object {
 	return o
 }
 
-// Title appends a title element.
-func (el *ElemList) Title(content string) {
-	t := &title{Data: content}
-	el.append(t)
-}
-
-type title struct {
-	XMLName xml.Name `xml:"title"`
-	Data    string   `xml:",chardata"`
+// SetTitle adds a <title> element to the object.
+func (o *Object) SetTitle(content string) *Object {
+	o.Title = content
+	return o
 }
 
 // Ints is a slice of integers that marshals, if used as an XML

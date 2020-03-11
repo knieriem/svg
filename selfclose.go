@@ -40,6 +40,12 @@ L:
 				case -1:
 					continue
 				case 0:
+					// Closing tag matches; now test whether the
+					// previous '>' is part of a </title> tag;
+					// in this case self-closing is not possible
+					if i >= 6 && bytes.Equal(tail[i-6:i], []byte("/title")) {
+						continue
+					}
 					copy(buf[iw:], tail[:i])
 					n := len(tail[:i])
 					ir += n + 3 + len(tag)
